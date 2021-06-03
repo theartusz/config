@@ -48,16 +48,25 @@ snap install spotify
 snap install bitwarden
 
 # vlc
-snap install vlc
+APP="vlc"
+if ! type discord > /dev/null
+then
+echo "Installing $APP"
+sudo snap install $APP
+echo "\e[32m$APP successfully installed\e[0m"
+else
+echo "\e[32m$APP already installed\e[0m"
+fi
 
 #discord
-if ! type discord > /dev/null # /dev/null - silencing non-error output
+APP="discord"
+if ! type $APP > /dev/null # /dev/null - silencing non-error output
 then
-echo "Installing Discord"
-snap install discord
-echo "\e[32mDiscord successfully installed\e[0m"
+echo "Installing $APP"
+sudo snap install $APP
+echo "\e[32m$APP successfully installed\e[0m"
 else
-echo "\e[32mDiscord already installed\e[0m"
+echo "\e[32m$APP already installed\e[0m"
 fi
 
 # terraform
