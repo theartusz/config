@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# download path
+DOWNLOAD_PATH=$HOME/Downloads
+
 apt update
 
 # curl
@@ -48,7 +51,14 @@ snap install bitwarden
 snap install vlc
 
 #discord
+if ! type discord > /dev/null # /dev/null - silencing non-error output
+then
+echo "Installing Discord"
 snap install discord
+echo "\e[32mDiscord successfully installed\e[0m"
+else
+echo "\e[32mDiscord already installed\e[0m"
+fi
 
 # terraform
 
@@ -74,5 +84,11 @@ kubectl version --client
 # docker
 
 # chrome
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo dpkg -i google-chrome-stable_current_amd64.deb
+if ! type google-chrome
+then
+echo "installing google-chrome"
+wget -P $DOWNLOAD_PATH https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt install ./google-chrome-stable_current_amd64.deb
+else
+echo "google-chrome is already installed"
+fi
