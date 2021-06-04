@@ -1,10 +1,24 @@
-#!/bin/sh
+#!/bin/bash
 
 # download path
 DOWNLOAD_PATH=$HOME/Downloads
 
+# snaps to dawnload
+snapArray=("vlc" "discord" "spotify" "bitwarden" "tela-icons" "code --classic" "slack --classic")
+
 apt update
 
+for snap in "${snapArray[@]}"; do
+    APP=$snap
+    if ! type $APP > /dev/null
+    then
+    echo "Installing $APP"
+    sudo snap install $APP
+    echo -e "\e[32m$APP successfully installed\e[0m"
+    else
+    echo -e "\e[32m$APP already installed\e[0m"
+    fi
+done
 # curl
 apt install curl
 curl --version
@@ -33,41 +47,6 @@ curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/ms-teams stable main" > /etc/apt/sources.list.d/teams.list'
 apt install teams
 
-snap install tela-icons
-
-# vs code
-snap install code --classic
-
-# slack
-snap install slack --classic
-
-# spotify
-snap install spotify
-
-# bitwrden
-snap install bitwarden
-
-# vlc
-APP="vlc"
-if ! type discord > /dev/null
-then
-echo "Installing $APP"
-sudo snap install $APP
-echo "\e[32m$APP successfully installed\e[0m"
-else
-echo "\e[32m$APP already installed\e[0m"
-fi
-
-#discord
-APP="discord"
-if ! type $APP > /dev/null # /dev/null - silencing non-error output
-then
-echo "Installing $APP"
-sudo snap install $APP
-echo "\e[32m$APP successfully installed\e[0m"
-else
-echo "\e[32m$APP already installed\e[0m"
-fi
 
 # terraform
 
