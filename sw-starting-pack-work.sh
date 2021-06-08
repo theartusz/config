@@ -5,42 +5,43 @@ DOWNLOAD_PATH=$HOME/Downloads
 # set IFS variable for word splitting to whitesapce
 IFS=' '
 
-# snaps to dawnload
-snapArray=("vlc" "discord" "spotify" "bitwarden" "code --classic" "slack --classic" "yq")
-
-for snap in "${snapArray[@]}"; do
-    # split array items
-    read -a APP <<< "$snap"
-    # heck if app is already installed
-    if ! type ${APP[0]} > /dev/null; then
-            # check if name of app consists of more then 1 word
-            if [ ${#APP[@]} -gt 1 ]; then
-                APP="${APP[0]} ${APP[1]}"
-            fi
-        echo "installing $APP"
-        sudo snap install $APP
-        echo -e "\e[32m$APP successfully installed\e[0m"
-        else
-        echo -e "$APP already installed"
-    fi
-done
-
-apt update
-
 # add gnome-tweak-tool repository
 sudo add-apt-repository universe
 
-aptArray=("curl" "git" "openconnect" "network-manager-openconnect" "network-manager-openconnect-gnome" "gnome-tweak-tool" "gnome-shell-extensions")
+sudo apt update
 
-for APP in "${aptArray[@]}"; do
-    if ! type $APP > /dev/null; then
-        echo "installing $APP"
-        sudo apt install $APP
-        echo -e "\e[32m$APP successfully installed\e[0m"
-        else
-        echo -e "$APP already installed"
-    fi
-done
+# snaps to dawnload
+snapArray=("vlc" "discord" "spotify" "bitwarden" "code --classic" "slack --classic" "yq")
+# apt programs to be installed
+aptArray=("curl" "git" "openconnect" "network-manager-openconnect" "network-manager-openconnect-gnome" "gnome-tweaks" "gnome-shell" "tmux" "fzf" "kubectx")
+
+install_loop()
+{
+    type="$1"
+    shift
+    appArray=("$@")
+    for app_name in "${appArray[@]}"; do
+        # split array items
+        read -a APP <<< "$app_name"
+        # heck if app is already installed
+        if ! type ${APP[0]} > /dev/null; then
+                # check if name of app consists of more then 1 word
+                if [ ${#APP[@]} -gt 1 ]; then
+                    APP="${APP[0]} ${APP[1]}"
+                fi
+            echo "installing $APP"
+            sudo $type install $APP
+            echo -e "\e[32m$APP successfully installed\e[0m"
+            else
+            echo -e "\e[33m$APP already installed\e[0m"
+        fi
+    done
+}
+
+install_loop snap "${snapArray[@]}"
+install_loop apt "${aptArray[@]}"
+
+read -p "presss to continue"
 
 # tela icons
 if [ ! -d ~/.themes && -d ~/.icons ];
@@ -55,9 +56,13 @@ sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/ms-teams stab
 apt install teams
 
 # terraform
+sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+sudo apt-get update && sudo apt-get install terraform
 
 # fish shell
-apt install fish
+sudo apt install fish
 chsh -s /usr/bin/fish $USER
 
 # azure CLI
@@ -70,8 +75,6 @@ echo "$(<kubectl.sha256) kubectl" | sha256sum --check
 install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 kubectl version --client
 
-# kubectx
-# fzf
 # git hub cli
 if ! type gh > /dev/null; then
     echo "installing GitHub cli"
@@ -81,7 +84,7 @@ if ! type gh > /dev/null; then
     sudo apt install gh
     echo -e "\e[32mgh successfully installed\e[0m"
     else
-    echo "GitHub cli is aready installed"
+    echo "\e[32mGitHub cli is aready installed\e[0m"
 fi
 
 # docker
