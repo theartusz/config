@@ -1,0 +1,10 @@
+WhiteSur theme
+    color - gray
+    ubuntu shell icon
+Tela icons
+gTile gnome extension
+    preset resize 1: 8x6 4:0 7:2,4:3 7:5,0:0 3:2,0:3 3:5
+    preset resize 2: 4x4 0:0 0:3,0:0 2:3,1:0 2:3,3:0 3:3
+    preset resize 3: 4x4 3:0 3:3,1:0 3:3,1:0 2:3,0:0 0:3
+
+openconnect VPN

@@ -11,7 +11,7 @@ sudo add-apt-repository universe
 sudo apt update
 
 # snaps to dawnload
-snapArray=("vlc" "discord" "spotify" "bitwarden" "code --classic" "slack --classic" "yq")
+snapArray=("vlc" "discord" "spotify" "bitwarden" "code --classic" "slack --classic" "yq" "helm --classic")
 # apt programs to be installed
 aptArray=("curl" "git" "openconnect" "network-manager-openconnect" "network-manager-openconnect-gnome" "gnome-tweaks" "gnome-shell" "terminator" "fzf" "kubectx")
 
