@@ -7,4 +7,4 @@ install software which I use to fresh instalation of linux
 2. make sript executable\
 `chmod +x <file-name>`
 3. execute script\
-`./<file-nam>e`
+`./sw-starting-pack-work.sh
