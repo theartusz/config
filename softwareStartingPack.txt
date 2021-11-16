@@ -8,3 +8,11 @@ gTile gnome extension
     preset resize 3: 4x4 3:0 3:3,1:0 3:3,1:0 2:3,0:0 0:3
 
 openconnect VPN
+fish
+fish kubectl autocomplete
+gh
+yq
+git
+kubectx
+kubens
+fzf
