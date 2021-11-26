@@ -1,0 +1,39 @@
+## prompt configuration
+#format = """
+#$directory\
+#$git_branch\
+#$kubernetes\
+#$character\
+#$all"""
+#
+format = "$directory$git_branch$git_status$kubernetes$all$line_break$character"
+add_newline = true
+
+[aws]
+disabled = true
+
+# Replace the "❯" symbol in the prompt with "➜"
+[character]                            # The name of the module we are configuring is "character"
+success_symbol = "[➜](bold green)"     # The "success_symbol" segment is being set to "➜" with the color "bold green"
+error_symbol = "[✗](bold red)"
+
+[cmd_duration]
+disabled = true
+
+[directory]
+truncation_length = 4
+truncation_symbol = "../"
+truncate_to_repo = false
+
+[git_status]
+style = "bold yellow"
+
+[gcloud]
+disabled = true
+
+[kubernetes]
+format = '[$symbol$context( \($namespace\))]($style) '
+disabled = false
+
+[terraform]
+disabled = true
