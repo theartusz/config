@@ -1,4 +1,4 @@
-# linux-config
+# config
 
 install software which I use to fresh instalation of linux
 
