@@ -1,11 +1,3 @@
-## prompt configuration
-#format = """
-#$directory\
-#$git_branch\
-#$kubernetes\
-#$character\
-#$all"""
-#
 format = "$directory$git_branch$git_status$kubernetes$all$line_break$character"
 add_newline = true
 
