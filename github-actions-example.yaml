@@ -1,0 +1,72 @@
+name: 'Terraform'
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    env:
+      ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: 'Find version of Terraform to use'
+      id: tfversion
+      run: echo ::set-output name=version::$(grep required_version providers.tf | sort -u | tail -1 | cut -d= -f2- | xargs)
+
+    - name: 'Setup Terraform'
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ steps.tfversion.outputs.version }}
+
+    - name: Terraform Init
+      run: terraform init -backend-config=storage_account_name=livedemostorageaccount
+
+    - name: Terraform Format
+      run: terraform fmt -check
+
+    - name: Terraform Refresh
+      run: terraform refresh -lock-timeout=300s
+ 
+    - name: Terraform Plan
+      run: terraform plan -out prod.tfplan -lock-timeout=300s
+    
+    - name: 'TF Show'
+      if: github.ref != 'refs/heads/main'
+      id: tfshow    
+      run: |
+        terraform show -no-color prod.tfplan
+    
+    - name: See if it exist any PR Comment with TF Plans
+      if: github.ref != 'refs/heads/main'
+      uses: peter-evans/find-comment@v1
+      id: fc
+      with:
+        issue-number: ${{ github.event.number }}
+        body-includes: Terraform plan
+
+    - name: 'Create or update PR Comment with newest TF PLAN'
+      if: github.ref != 'refs/heads/main'
+      uses: peter-evans/create-or-update-comment@v1
+      with:
+        comment-id: ${{ steps.fc.outputs.comment-id }}
+        issue-number: ${{ github.event.number }}
+        edit-mode: replace
+        body: |
+          # Terraform plan
+          ```
+          ${{ steps.tfshow.outputs.stdout }}
+          ```
+    - name: 'Terraform Apply'
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -lock-timeout=3000s -auto-approve prod.tfplan #&& sleep 300 && terraform destroy -lock-timeout=3000s -auto-approve
