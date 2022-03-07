@@ -1,8 +1,12 @@
 # config
+Setup fish config with aliases and starship as i like it :)
 
-install software which I use to fresh instalation of linux
+Copy the content of `config.fish` and paste it to `./.config/fish/config.fish`
 
-## Steps to run the script
+## sw-starting-pack
+Install software which I use to fresh instalation of linux
+
+## Steps to run the script sw-starting-pack
 1. download the script
 2. make sript executable\
 `chmod +x <file-name>`
