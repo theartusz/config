@@ -4,6 +4,7 @@ alias kx=kubectx # custom kubectx alias
 alias kns=kubens # custom kubens alias
 set -x GITHUB_USER theartusz #github user
 set -x TF_VAR_GITHUB_OWNER theartusz
+set -x STARSHIP_CONFIG ~/repos/toolkit/starship.toml
 
 # enable starship
 starship init fish | source
