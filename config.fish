@@ -6,5 +6,8 @@ set -x GITHUB_USER theartusz #github user
 set -x TF_VAR_GITHUB_OWNER theartusz
 set -x STARSHIP_CONFIG ~/repos/toolkit/starship.toml
 
+# mac
+#set PATH /opt/homebrew/bin $PATH 
+
 # enable starship
 starship init fish | source
